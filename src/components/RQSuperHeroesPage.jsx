@@ -6,50 +6,25 @@ const fetchSuperHeroes = () => {
 }
 
 export const RQSuperHeroesPage = () => {
-  const { isLoading, data } = useQuery('super-heroes', fetchSuperHeroes)
+  const { isLoading, error, data } = useQuery({
+    queryKey: ['super-heroes'],
+    queryFn: fetchSuperHeroes
+  })
 
-
-  if(isLoading) {
+  if (isLoading) {
     return <h2>Loading...</h2>
-    
-  }
-    return (
-      <div>
-        <h2>RQ Super Heroes Page</h2>
-        {data?.data.map((hero) => {
-            return <div key={hero.name}>{hero.name}</div>
-          })
-        }
-      </div>
-    )
   }
 
+  if (error) {
+    return <h2>An error has occurred: {error.message}</h2>
+  }
 
-// import { useQuery } from "@tanstack/react-query";
-// import axios from "axios";
-
-// export const RQSuperHeroesPage = () => {
-//   const { isLoading, isError, data, error } = useQuery(['super-heroes'], () => {
-//     return axios.get('http://localhost:4000/superheroes');
-//   });
-
-//   console.log("Query Data:", data);
-
-//   if (isLoading) {
-//     return <h2>Loading...</h2>;
-//   }
-
-//   if (isError) {
-//     console.log("Query Error:", error);
-//     return <h2>Error: {error.message}</h2>;
-//   }
-
-//   return (
-//     <div>
-//       <h2>RQ Super Heroes Page</h2>
-//       {data?.data.map((hero) => (
-//         <div key={hero.name}>{hero.name}</div>
-//       ))}
-//     </div>
-//   );
-// };
+  return (
+    <div>
+      <h2>RQ Super Heroes Page</h2>
+      {data?.data.map((hero) => (
+        <div key={hero.name}>{hero.name}</div>
+      ))}
+    </div>
+  )
+}
