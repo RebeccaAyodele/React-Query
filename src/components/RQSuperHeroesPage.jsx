@@ -1,35 +1,7 @@
-import { useQuery } from "@tanstack/react-query"
-import axios from "axios"
-import { useEffect } from "react"
-
-const fetchSuperHeroes = () => {
-  return axios.get('http://localhost:4000/superheroes')
-}
+import useSuperHeroesData from "../hooks/useSuperHeroesData";
 
 export const RQSuperHeroesPage = () => {
-
-
-  const { isLoading, error, data, isFetching, refetch } = useQuery({
-    queryKey: ['super-heroes'],
-    queryFn: fetchSuperHeroes,
-    select: (data) => {
-      const superHeroNames = data.data.map(hero => hero.name)
-      return superHeroNames
-    }
-  })
-
-  useEffect(() => {
-    if (data) {
-      console.log('Perform side effect after data fetching', data);
-    }
-  })
-
-  useEffect(() => {
-    if (error) {
-      console.log('Perform side effet after encountering error', error);
-    }
-  })
-
+  const { isLoading, error, data, isFetching, refetch } = useSuperHeroesData()
   console.log({ isLoading, isFetching });
 
   if (isLoading || isFetching) {
