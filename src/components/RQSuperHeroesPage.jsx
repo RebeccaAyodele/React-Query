@@ -12,6 +12,10 @@ export const RQSuperHeroesPage = () => {
   const { isLoading, error, data, isFetching, refetch } = useQuery({
     queryKey: ['super-heroes'],
     queryFn: fetchSuperHeroes,
+    select: (data) => {
+      const superHeroNames = data.data.map(hero => hero.name)
+      return superHeroNames
+    }
   })
 
   useEffect(() => {
@@ -40,9 +44,14 @@ export const RQSuperHeroesPage = () => {
     <div>
       <button onClick={refetch}>Fetch Heroes</button>
       <h2>RQ Super Heroes Page</h2>
-      {data?.data.map((hero) => (
+      {/* {data?.data.map((hero) => (
         <div key={hero.name}>{hero.name}</div>
-      ))}
+      ))} */}
+      {
+        data.map(heroName => {
+          return <div key={heroName}>{heroName}</div>
+        })
+      }
     </div>
   )
 }
